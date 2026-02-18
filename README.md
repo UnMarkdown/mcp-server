@@ -24,7 +24,7 @@ Add this to your Claude Desktop configuration file:
   "mcpServers": {
     "unmarkdown": {
       "command": "npx",
-      "args": ["-y", "@unmarkdown/mcp-server"],
+      "args": ["-y", "@un-markdown/mcp-server"],
       "env": {
         "UNMARKDOWN_API_KEY": "um_your_api_key_here"
       }
@@ -42,7 +42,7 @@ Add to your Cursor MCP settings (`.cursor/mcp.json`):
   "mcpServers": {
     "unmarkdown": {
       "command": "npx",
-      "args": ["-y", "@unmarkdown/mcp-server"],
+      "args": ["-y", "@un-markdown/mcp-server"],
       "env": {
         "UNMARKDOWN_API_KEY": "um_your_api_key_here"
       }
@@ -60,7 +60,7 @@ Add to your VS Code MCP settings (`.vscode/mcp.json`):
   "servers": {
     "unmarkdown": {
       "command": "npx",
-      "args": ["-y", "@unmarkdown/mcp-server"],
+      "args": ["-y", "@un-markdown/mcp-server"],
       "env": {
         "UNMARKDOWN_API_KEY": "um_your_api_key_here"
       }
@@ -74,7 +74,7 @@ Add to your VS Code MCP settings (`.vscode/mcp.json`):
 If you prefer to install globally instead of using `npx`:
 
 ```bash
-npm install -g @unmarkdown/mcp-server
+npm install -g @un-markdown/mcp-server
 ```
 
 Then use `unmarkdown-mcp` as the command instead of `npx`:

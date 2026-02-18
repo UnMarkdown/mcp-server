@@ -1,5 +1,5 @@
 {
-  "name": "@unmarkdown/mcp-server",
+  "name": "@un-markdown/mcp-server",
   "version": "1.0.0",
   "description": "MCP server for the Unmarkdown API — convert markdown, manage documents, publish pages",
   "license": "MIT",
