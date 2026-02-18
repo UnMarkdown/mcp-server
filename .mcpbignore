@@ -1,0 +1,10 @@
+src/
+tsconfig.json
+*.ts
+*.map
+*.d.ts
+build/*.d.ts
+build/*.d.ts.map
+build/*.js.map
+node_modules/typescript/
+node_modules/@types/

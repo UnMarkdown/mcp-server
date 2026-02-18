@@ -1,0 +1,94 @@
+{
+  "manifest_version": "0.3",
+  "name": "unmarkdown",
+  "display_name": "Unmarkdown",
+  "version": "1.0.0",
+  "description": "Convert markdown to beautifully formatted documents. Style with 62 templates, publish to the web, or copy to Google Docs, Word, Slack, OneNote, Email, and Plain Text.",
+  "long_description": "Unmarkdown is a markdown publishing platform. This extension connects Claude to the Unmarkdown API, letting you convert markdown to styled HTML, create and manage documents, publish pages to the web, and export to 8 destinations including Google Docs, Word, Slack, OneNote, Email, and Plain Text. Choose from 62 visual templates with light and dark themes.",
+  "author": {
+    "name": "UnMarkdown",
+    "url": "https://github.com/UnMarkdown"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UnMarkdown/mcp-server"
+  },
+  "homepage": "https://unmarkdown.com",
+  "documentation": "https://docs.unmarkdown.com/api/overview",
+  "support": "https://github.com/UnMarkdown/mcp-server/issues",
+  "icon": "icon.png",
+  "server": {
+    "type": "node",
+    "entry_point": "build/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/build/index.js"],
+      "env": {
+        "UNMARKDOWN_API_KEY": "${user_config.api_key}"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "convert_markdown",
+      "description": "Convert markdown to formatted HTML for a specific destination (Google Docs, Word, Slack, OneNote, Email, Plain Text)"
+    },
+    {
+      "name": "create_document",
+      "description": "Create a new markdown document in Unmarkdown"
+    },
+    {
+      "name": "list_documents",
+      "description": "List your saved documents with pagination"
+    },
+    {
+      "name": "get_document",
+      "description": "Get a document by ID, including its full markdown content"
+    },
+    {
+      "name": "update_document",
+      "description": "Update a document's content or metadata"
+    },
+    {
+      "name": "publish_document",
+      "description": "Publish a document to a public URL"
+    },
+    {
+      "name": "get_usage",
+      "description": "Check your API usage quota for the current billing month"
+    }
+  ],
+  "keywords": [
+    "markdown",
+    "converter",
+    "publishing",
+    "google-docs",
+    "word",
+    "slack",
+    "onenote",
+    "email",
+    "templates",
+    "formatting",
+    "documents"
+  ],
+  "license": "MIT",
+  "privacy_policies": [
+    "https://unmarkdown.com/privacy"
+  ],
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "Unmarkdown API Key",
+      "description": "Your Unmarkdown API key. Get one at https://unmarkdown.com (Settings > API).",
+      "sensitive": true,
+      "required": true
+    }
+  },
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  }
+}
