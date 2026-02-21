@@ -249,7 +249,7 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
       slug: z
         .string()
         .optional()
-        .describe("Custom URL slug (Pro only, auto-generated if omitted)"),
+        .describe("Custom URL slug (auto-generated if omitted)"),
       description: z
         .string()
         .optional()
@@ -257,7 +257,7 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
       visibility: z
         .enum(["public", "link"])
         .optional()
-        .describe('"public" (Pro only) or "link" (default, unlisted)'),
+        .describe('"public" or "link" (default, unlisted)'),
       page_width: z
         .enum(["full", "wide", "standard"])
         .optional()

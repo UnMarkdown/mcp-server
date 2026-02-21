@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "unmarkdown",
   "display_name": "Unmarkdown",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert markdown to beautifully formatted documents. Style with 62 templates, publish to the web, or copy to Google Docs, Word, Slack, OneNote, Email, and Plain Text.",
   "long_description": "Unmarkdown is a markdown publishing platform. This extension connects Claude to the Unmarkdown API, letting you convert markdown to styled HTML, create and manage documents, publish pages to the web, and export to 8 destinations including Google Docs, Word, Slack, OneNote, Email, and Plain Text. Choose from 62 visual templates with light and dark themes.",
   "author": {

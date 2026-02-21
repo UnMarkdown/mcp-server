@@ -5,32 +5,43 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { UnmarkdownClient } from "./api-client.js";
 import { registerTools } from "./tools.js";
 
-const apiKey = process.env.UNMARKDOWN_API_KEY;
-if (!apiKey) {
-  process.stderr.write(
-    "Error: UNMARKDOWN_API_KEY environment variable is required.\n" +
-      "Get your API key at https://unmarkdown.com/account/api\n",
-  );
-  process.exit(1);
+function createServerInstance(apiKey: string, baseUrl?: string) {
+  const client = new UnmarkdownClient(apiKey, baseUrl);
+  const server = new McpServer({
+    name: "unmarkdown",
+    version: "1.0.1",
+  });
+  registerTools(server, client);
+  return server;
 }
 
-const baseUrl = process.env.UNMARKDOWN_API_URL;
-const client = new UnmarkdownClient(apiKey, baseUrl);
+// Smithery sandbox: allows scanning tools without real credentials
+export function createSandboxServer() {
+  return createServerInstance("um_sandbox").server;
+}
 
-const server = new McpServer({
-  name: "unmarkdown",
-  version: "1.0.0",
-});
+// CLI entry point
+const isMainModule =
+  process.argv[1]?.endsWith("index.js") ||
+  process.argv[1]?.endsWith("index.cjs");
 
-registerTools(server, client);
+if (isMainModule) {
+  const apiKey = process.env.UNMARKDOWN_API_KEY;
+  if (!apiKey) {
+    process.stderr.write(
+      "Error: UNMARKDOWN_API_KEY environment variable is required.\n" +
+        "Get your API key at https://unmarkdown.com/account/api\n",
+    );
+    process.exit(1);
+  }
 
-async function main() {
+  const server = createServerInstance(apiKey, process.env.UNMARKDOWN_API_URL);
+
   const transport = new StdioServerTransport();
-  await server.connect(transport);
-  process.stderr.write("Unmarkdown MCP server running on stdio\n");
+  server.connect(transport).then(() => {
+    process.stderr.write("Unmarkdown MCP server running on stdio\n");
+  }).catch((err) => {
+    process.stderr.write(`Fatal: ${err}\n`);
+    process.exit(1);
+  });
 }
-
-main().catch((err) => {
-  process.stderr.write(`Fatal: ${err}\n`);
-  process.exit(1);
-});

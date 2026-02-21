@@ -1,0 +1,315 @@
+{
+  "payload": {
+    "type": "hosted",
+    "stateful": false,
+    "hasAuthAdapter": false,
+    "serverCard": {
+      "serverInfo": {
+        "name": "unmarkdown",
+        "version": "1.0.1"
+      },
+      "tools": [
+        {
+          "name": "convert_markdown",
+          "description": "Convert markdown to formatted HTML for a specific destination (Google Docs, Word, Slack, OneNote, Email, Plain Text)",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "markdown": {
+                "type": "string",
+                "description": "Markdown content to convert"
+              },
+              "destination": {
+                "type": "string",
+                "enum": [
+                  "google-docs",
+                  "word",
+                  "slack",
+                  "onenote",
+                  "email",
+                  "plain-text",
+                  "generic",
+                  "html"
+                ],
+                "description": "Target format (default: \"generic\")"
+              },
+              "template_id": {
+                "type": "string",
+                "description": "Visual template ID (default: \"swiss\")"
+              },
+              "theme_mode": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark"
+                ],
+                "description": "Color theme (default: \"light\")"
+              }
+            },
+            "required": [
+              "markdown"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "title": "Convert Markdown",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "create_document",
+          "description": "Create a new markdown document in Unmarkdown",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Document title"
+              },
+              "content": {
+                "type": "string",
+                "description": "Markdown content (default: empty)"
+              },
+              "template_id": {
+                "type": "string",
+                "description": "Visual template ID (default: \"swiss\")"
+              },
+              "theme_mode": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark"
+                ],
+                "description": "Color theme (default: \"light\")"
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "title": "Create Document",
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": false,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "list_documents",
+          "description": "List your saved documents with pagination",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "description": "Max results per page (default: 20, max: 100)"
+              },
+              "cursor": {
+                "type": "string",
+                "description": "Pagination cursor from a previous response"
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "title": "List Documents",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_document",
+          "description": "Get a document by ID, including its full markdown content",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Document UUID"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "title": "Get Document",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "update_document",
+          "description": "Update a document's content or metadata",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Document UUID"
+              },
+              "title": {
+                "type": "string",
+                "description": "New title"
+              },
+              "content": {
+                "type": "string",
+                "description": "New markdown content"
+              },
+              "template_id": {
+                "type": "string",
+                "description": "New template ID"
+              },
+              "theme_mode": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark"
+                ],
+                "description": "New color theme"
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Document description (null to clear)"
+              },
+              "page_width": {
+                "type": "string",
+                "enum": [
+                  "full",
+                  "wide",
+                  "standard"
+                ],
+                "description": "Page width for published view"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "title": "Update Document",
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "publish_document",
+          "description": "Publish a document to a public URL",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Document UUID"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Custom URL slug (auto-generated if omitted)"
+              },
+              "description": {
+                "type": "string",
+                "description": "SEO description for published page"
+              },
+              "visibility": {
+                "type": "string",
+                "enum": [
+                  "public",
+                  "link"
+                ],
+                "description": "\"public\" or \"link\" (default, unlisted)"
+              },
+              "page_width": {
+                "type": "string",
+                "enum": [
+                  "full",
+                  "wide",
+                  "standard"
+                ],
+                "description": "Page width for published view"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "title": "Publish Document",
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "get_usage",
+          "description": "Check your API usage quota for the current billing month",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "title": "Get API Usage",
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ],
+      "resources": [],
+      "prompts": []
+    },
+    "source": {
+      "commit": "5463bc823a97649956e08543f7e0b5eb4cff938d",
+      "branch": "main"
+    }
+  },
+  "artifacts": {
+    "module": "module.js",
+    "sourcemap": "module.js.map"
+  }
+}
