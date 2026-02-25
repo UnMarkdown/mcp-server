@@ -1,6 +1,6 @@
 {
   "name": "@un-markdown/mcp-server",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "mcpName": "io.github.UnMarkdown/mcp-server",
   "description": "MCP server for the Unmarkdown API — convert markdown, manage documents, publish pages",
   "license": "MIT",

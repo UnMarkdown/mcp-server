@@ -33,7 +33,7 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
   // 1. convert_markdown
   server.tool(
     "convert_markdown",
-    "Convert markdown to formatted HTML for a specific destination (Google Docs, Word, Slack, OneNote, Email, Plain Text)",
+    "Convert markdown to destination-specific HTML and plain text. Returns JSON with 'html' and 'plain_text' fields. For Slack, present the plain_text to the user. For Google Docs/Word/OneNote, direct users to unmarkdown.com to use the copy button (raw HTML cannot be pasted into these apps). Does not render Chart.js, Mermaid, Graphviz, or KaTeX; use publish_document for documents with diagrams or math.",
     {
       markdown: z.string().describe("Markdown content to convert"),
       destination: z
@@ -89,6 +89,10 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
         .string()
         .optional()
         .describe("Markdown content (default: empty)"),
+      folder: z
+        .string()
+        .optional()
+        .describe("Folder name (case-insensitive) or folder ID to place the document in"),
       template_id: z
         .string()
         .optional()
@@ -105,11 +109,12 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
       idempotentHint: false,
       openWorldHint: true,
     },
-    async ({ title, content, template_id, theme_mode }) => {
+    async ({ title, content, folder, template_id, theme_mode }) => {
       try {
         const body: Record<string, unknown> = {};
         if (title) body.title = title;
         if (content) body.content = content;
+        if (folder) body.folder = folder;
         if (template_id) body.template_id = template_id;
         if (theme_mode) body.theme_mode = theme_mode;
         const result = await client.request("POST", "/v1/documents", body);
@@ -123,8 +128,12 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
   // 3. list_documents
   server.tool(
     "list_documents",
-    "List your saved documents with pagination",
+    "List your saved documents with pagination. Optionally filter by folder name or ID.",
     {
+      folder: z
+        .string()
+        .optional()
+        .describe("Optional. Filter by folder name (case-insensitive) or folder ID."),
       limit: z
         .number()
         .int()
@@ -144,9 +153,10 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
       idempotentHint: true,
       openWorldHint: true,
     },
-    async ({ limit, cursor }) => {
+    async ({ folder, limit, cursor }) => {
       try {
         const query: Record<string, string> = {};
+        if (folder) query.folder = folder;
         if (limit) query.limit = String(limit);
         if (cursor) query.cursor = cursor;
         const result = await client.request(
@@ -197,6 +207,11 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
       id: z.string().describe("Document UUID"),
       title: z.string().optional().describe("New title"),
       content: z.string().optional().describe("New markdown content"),
+      folder: z
+        .string()
+        .nullable()
+        .optional()
+        .describe("Move to folder by name (case-insensitive) or folder ID. Set to null to move to Unfiled."),
       template_id: z.string().optional().describe("New template ID"),
       theme_mode: z
         .enum(["light", "dark"])
@@ -219,11 +234,12 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
       idempotentHint: true,
       openWorldHint: true,
     },
-    async ({ id, title, content, template_id, theme_mode, description, page_width }) => {
+    async ({ id, title, content, folder, template_id, theme_mode, description, page_width }) => {
       try {
         const body: Record<string, unknown> = {};
         if (title !== undefined) body.title = title;
         if (content !== undefined) body.content = content;
+        if (folder !== undefined) body.folder = folder;
         if (template_id !== undefined) body.template_id = template_id;
         if (theme_mode !== undefined) body.theme_mode = theme_mode;
         if (description !== undefined) body.description = description;
@@ -243,7 +259,7 @@ export function registerTools(server: McpServer, client: UnmarkdownClient) {
   // 6. publish_document
   server.tool(
     "publish_document",
-    "Publish a document to a public URL",
+    "Publish a document to a shareable web page. Default visibility is 'link' (unlisted). Published pages render all content including Chart.js charts, Mermaid diagrams, Graphviz graphs, and KaTeX math. Email-based sharing is not available here; direct users to unmarkdown.com for that.",
     {
       id: z.string().describe("Document UUID"),
       slug: z

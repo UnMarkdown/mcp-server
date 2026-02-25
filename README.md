@@ -12,7 +12,7 @@ A [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server that co
 
 - **Convert markdown** to styled HTML for 8 destinations: Google Docs, Word, Slack, OneNote, Email, Plain Text, generic HTML, and raw HTML
 - **62 visual templates** with light and dark themes (Swiss, Executive, Terminal, GitHub, and more)
-- **Create, read, update** documents in your Unmarkdown library
+- **Create, read, update** documents in your Unmarkdown library, organized into folders
 - **Publish documents** to shareable public URLs at `unmarkdown.com/d/your-slug`
 - **Track API usage** and quota for the current billing period
 
@@ -134,24 +134,23 @@ Then use `unmarkdown-mcp` as the command instead of `npx`:
 
 Claude will use the `convert_markdown` tool with `destination: "google-docs"` and `template_id: "executive"`, returning styled HTML ready to paste into Google Docs with proper headings, fonts, and colors.
 
-### Example 2: Create and publish a document
+### Example 2: Create a document in a folder
 
-> "Create a new document called 'API Changelog - February 2026' with this content, then publish it with a clean URL."
-
-Claude will:
-1. Call `create_document` with the title and markdown content
-2. Call `publish_document` with the returned document ID and a custom slug
-
-You get back a live URL like `https://unmarkdown.com/d/api-changelog-february-2026`.
-
-### Example 3: Update an existing document
-
-> "List my documents and update the most recent one with this new introduction paragraph."
+> "Create a new document called 'API Changelog - February 2026' in my Release Notes folder with this content, then publish it."
 
 Claude will:
-1. Call `list_documents` to fetch your document library
-2. Call `get_document` to read the current content
-3. Call `update_document` with the modified markdown
+1. Call `create_document` with the title, markdown content, and `folder: "Release Notes"`
+2. Call `publish_document` with the returned document ID
+
+The document is created directly in the specified folder, and you get back a live URL like `https://unmarkdown.com/d/api-changelog-february-2026`.
+
+### Example 3: Update and move a document
+
+> "Move the Q4 report to the Archive folder and update its title."
+
+Claude will:
+1. Call `list_documents` to find the document
+2. Call `update_document` with the new title and `folder: "Archive"`
 
 ### Example 4: Format markdown for Slack
 
@@ -170,10 +169,10 @@ Claude calls `get_usage` and returns your current usage count, monthly limit, an
 | Tool | Description | Read-only | Idempotent |
 |------|-------------|-----------|------------|
 | `convert_markdown` | Convert markdown to styled HTML for any of 8 destinations | Yes | Yes |
-| `create_document` | Create a new document in your library | No | No |
-| `list_documents` | List saved documents with pagination | Yes | Yes |
+| `create_document` | Create a new document in your library (optionally in a folder) | No | No |
+| `list_documents` | List saved documents with pagination (optionally filter by folder) | Yes | Yes |
 | `get_document` | Fetch a document by ID with full content | Yes | Yes |
-| `update_document` | Modify a document's title, content, template, or metadata | No | Yes |
+| `update_document` | Modify a document's title, content, template, metadata, or folder | No | Yes |
 | `publish_document` | Publish a document to a shareable public URL | No | Yes |
 | `get_usage` | Check API quota for the current billing month | Yes | Yes |
 
