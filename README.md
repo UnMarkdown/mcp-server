@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@un-markdown/mcp-server)](https://www.npmjs.com/package/@un-markdown/mcp-server)
 [![License: MIT](https://img.shields.io/github/license/UnMarkdown/mcp-server)](https://github.com/UnMarkdown/mcp-server/blob/main/LICENSE)
-[![Smithery](https://smithery.ai/badge/unmarkdown/unmarkdown-mcp)](https://smithery.ai/servers/unmarkdown/unmarkdown-mcp)
+[![LightNow](https://lightnow.ai/badge/io.github.UnMarkdown/mcp-server)](https://lightnow.ai/servers/io.github.UnMarkdown/mcp-server)
 
 A [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server that connects AI assistants to the [Unmarkdown](https://unmarkdown.com) API. Convert markdown to beautifully formatted documents, manage your document library, and publish pages to the web, all from inside Claude, Cursor, VS Code, or any MCP-compatible client.
 
